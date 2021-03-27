@@ -125,3 +125,14 @@ std::vector<symbol> debugger::lookup_symbol(const std::string& name) {
 	return syms;
 }
 
+void debugger::initialise_load_address() {
+	if (m_elf.get_hdr().type == elf::et::dyn) {
+		std::ifstream map("/proc/" + std::to_string(m_pid) + "/maps/");
+
+		std::string addr;
+		std::getline(map, addr, '-');
+
+		m_load_address = std::stoi(addr, 0, 16);
+	}
+}
+
