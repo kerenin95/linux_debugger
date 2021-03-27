@@ -87,4 +87,11 @@ void debugger::print_backtrace() {
 
 	auto frame_pointer = get_register_value(m_pid, reg::rbp);
 	auto return_address = read_memory(frame_pointer + 8);
+
+	while (dwarf::at_name(current_func) != "main") {
+		current_func = get_function_from_pc(offset_load_address(return_address));
+		output_frame(current_func);
+		frame_pointer = read_memory(frame_pointer);
+		return_address = read_memory(frame_pointer + 8);
+	}
 }
