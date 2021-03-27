@@ -106,3 +106,22 @@ symbol_type to_symbol_type(elf::stt sym) {
 	default: return symbol_type::notype;
 	}
 };
+
+std::vector<symbol> debugger::lookup_symbol(const std::string& name) {
+	std::vector<symbol> syms;
+
+	for (auto& sec : m_elf.sections()) {
+		if (sec.get_hdr().type != elf::sht::symtab && sec.get_hdr().type != elf::sht::dynsym)
+			continue;
+
+		for (auto sym : sec.as_symtab()) {
+			if (sym.get_name() == name) {
+				auto& d = sym.get_data();
+				syms.push_back(symbol{ to_symbol_type(d.type()), d.value });
+			}
+		}
+	}
+
+	return syms;
+}
+
