@@ -64,9 +64,27 @@ void debugger::read_variables() {
 					break;
 				}
 
+				default:
+					throw std::runtime_error{ "Unhandled variable location"};
 
 				}
 			}
+			else {
+				throw std::runtime_error{ "Unhandled variable location" };
+			}
 		}
 	}
+}
+
+void debugger::print_backtrace() {
+	auto output_frame = [frame_number = 0](auto&& func) mutable {
+		std::cout << "frame #" << frame_number++ << ": 0x" << dwarf::at_low_pc(func)
+			<< ' ' << dwarf::at_name(func) << std::endl;
+	};
+
+	auto current_func = get_function_from_pc(offset_load_address(get_pc()));
+	output_frame(current_func);
+
+	auto frame_pointer = get_register_value(m_pid, reg::rbp);
+	auto return_address = read_memory(frame_pointer + 8);
 }
