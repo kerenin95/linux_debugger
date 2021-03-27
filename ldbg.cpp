@@ -168,3 +168,14 @@ void debugger::step_out() {
 	}
 }
 
+void debugger::step_in() {
+	auto line = get_line_entry_from_pc(get_offset_pc())-> line;
+
+	while (get_line_entry_from_pc(get_offset_pc())->line == line) {
+		single_step_instruction_with_breakpoint_check();
+	}
+
+	auto line_entry = get_line_entry_from_pc(get_offset_pc());
+	print_soruce(line_entry->file->path, line_entry->line);
+}
+
