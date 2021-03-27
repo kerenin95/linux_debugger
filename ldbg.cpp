@@ -140,3 +140,7 @@ uint64_t debugger::offset_load_address(uint64_t addr) {
 	return addr - m_load_address;
 }
 
+uint64_t debugger::offset_dwarf_address(uint64_t addr0) {
+	return addr + m_load_address;
+}
+
