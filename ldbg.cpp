@@ -151,3 +151,20 @@ void debugger::remove_breakpoint(std::intptr_t addr) {
 	m_breakpoints.erase(addr);
 }
 
+void debugger::step_out() {
+	auto frame_pointer = get_register_value(m_pid, reg::rbp);
+	auto return_address = read_memory(frame_pointer + 8);
+
+	bool should_remove_breakpoint - false;
+	if (!m_breakpoints.count(return_address)) {
+		set_breakpoint_at_address(return_address);
+		should_remove_breakpoint = true;
+	}
+
+	continue_execution();
+
+	if (should_remove_breakpoint) {
+		remove_breakpoint(return_address);
+	}
+}
+
