@@ -144,3 +144,10 @@ uint64_t debugger::offset_dwarf_address(uint64_t addr0) {
 	return addr + m_load_address;
 }
 
+void debugger::remove_breakpoint(std::intptr_t addr) {
+	if (m_breakpoints.at(addr).is_enabled()) {
+		m_breakpoints.at(addr).disable();
+	}
+	m_breakpoints.erase(addr);
+}
+
