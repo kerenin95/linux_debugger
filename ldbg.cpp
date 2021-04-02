@@ -242,3 +242,7 @@ uint64_t debugger::get_pc() {
 uint64_t debugger::get_offset_pc() {
 	return offset_load_address(get_pc());
 }
+
+void debugger::set_pc(uint64_t pc) {
+	set_register_value(m_pid, reg::rip, pc);
+}
