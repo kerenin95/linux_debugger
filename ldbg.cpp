@@ -234,3 +234,7 @@ uint64_t debugger::read_memory(uint64_t address) {
 void debugger::write_memory(uint64_t address, uint64_t value) {
 	ptrace(PTRACE_POKEDATA, m_pid, address, value);
 }
+
+uint64_t debugger::get_pc() {
+	return get_register_value(m_pid, reg::rip);
+}
