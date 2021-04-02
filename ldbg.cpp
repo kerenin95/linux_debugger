@@ -212,3 +212,7 @@ void debugger::step_over() {
 	}
 }
 
+void debugger::single_step_instruction() {
+	ptrace(PTRACE_SINGLESTEP, m_pid, nullptr, nullptr);
+	wait_for_signal();
+}
