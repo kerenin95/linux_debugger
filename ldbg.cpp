@@ -230,3 +230,7 @@ void debugger::single_step_instruction_with_breakpoint_check() {
 uint64_t debugger::read_memory(uint64_t address) {
 	return ptrace(PTRACE_PEEKDATA, m_pid, address, nullptr);
 }
+
+void debugger::write_memory(uint64_t address, uint64_t value) {
+	ptrace(PTRACE_POKEDATA, m_pid, address, value);
+}
