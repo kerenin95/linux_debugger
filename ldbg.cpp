@@ -262,3 +262,20 @@ dwarf::die debugger::get_function_from_pc(uint64_t pc) {
 
 	throw std::out_of_range{ "Cannot find function" };
 }
+
+dwarf::line_table::iterator debugger::get_line_entry_from_pc(uint64_t pc) {
+	for (auto& cu : m_dwarf.compilation_units()) {
+		if (die_pc_range(cu.root()).contains(pc)) {
+			auto& lt = cu.get_line_table();
+			auto it = lt.find_address(pc);
+			if (it == lt.end()) {
+				throw std::out_of_range{ "Cannot find line entry" };
+			}
+			else {
+				return it;
+			}
+		}
+	}
+
+	throw std::out_of_range{ "Cannot find line entry" };
+}
