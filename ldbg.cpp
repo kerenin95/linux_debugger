@@ -226,3 +226,7 @@ void debugger::single_step_instruction_with_breakpoint_check() {
 		single_step_instruction();
 	}
 }
+
+uint64_t debugger::read_memory(uint64_t address) {
+	return ptrace(PTRACE_PEEKDATA, m_pid, address, nullptr);
+}
